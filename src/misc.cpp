@@ -27,6 +27,7 @@ typedef jpcre2::select<char> jp;
 #include "misc.h"
 
 #ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
 //#include <io.h>
 #include <windows.h>
 #include <winreg.h>
@@ -711,10 +712,11 @@ std::string fileGet(const std::string &path, bool scope_limit)
         std::fseek(fp, 0, SEEK_END);
         long tot = std::ftell(fp);
         char *data = new char[tot + 1];
+        data[tot] = '\0';
         std::rewind(fp);
         std::fread(&data[0], 1, tot, fp);
         std::fclose(fp);
-        content.append(data, 0, tot);
+        content.assign(data, tot);
         delete[] data;
     }
 
